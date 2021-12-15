@@ -36,6 +36,7 @@ public class BallPlayer : MonoBehaviour
     public void BallMovementForward()
     {
         rb.AddTorque(-Vector3.forward * speed);
+
         if (isPlayParticle)
         {
             isPlayParticle = false;
