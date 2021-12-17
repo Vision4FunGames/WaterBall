@@ -8,11 +8,22 @@ public class BallPlayer : MonoBehaviour
     public ParticleSystem particleEffectWater;
     public float upspeed;
     public float speed;
+    public float powerTime;
+    public float maxPosY;
 
     GameObject ballChilObj;
     Rigidbody rb;
-    bool isPlayParticle;
+
     Vector3 dir;
+    Vector3 posY;
+
+    float timer;
+    float timerZero;
+    bool isFinishPower;
+    bool isPlayParticle;
+    public bool isFail;
+    public bool startGame;
+
     void Start()
     {
         Application.targetFrameRate = 60;
@@ -22,14 +33,42 @@ public class BallPlayer : MonoBehaviour
 
     void FixedUpdate()
     {
-        dir = transform.GetChild(0).transform.position - transform.GetChild(1).transform.position;
-        if (Input.GetMouseButton(0))
+        if(startGame)
         {
-            BallMovementUp();
-        }
-        else
-        {
-            BallMovementForward();
+            dir = transform.GetChild(0).transform.position - transform.GetChild(1).transform.position;
+            if (Input.GetMouseButton(0))
+            {
+                if (timer < powerTime)
+                {
+                    timer = timer + Time.deltaTime;
+                    BallMovementUp();
+                }
+                else
+                {
+                    isFinishPower = true;
+                    BallMovementForward();
+                }
+            }
+            else
+            {
+                BallMovementForward();
+                timer = 0;
+            }
+            if (isFinishPower)
+            {
+                CheckPowerTime();
+            }
+
+            if (isFail)
+            {
+                BallBompFail();
+            }
+            else
+            {
+                posY = transform.position;
+                posY.y = Mathf.Clamp(transform.position.y, -20, maxPosY);
+                transform.position = posY;
+            }
         }
     }
 
@@ -52,15 +91,44 @@ public class BallPlayer : MonoBehaviour
             particleEffectWater.Play();
         }
     }
+    public void CheckPowerTime()
+    {
+        if (timerZero < 2)
+        {
+            timerZero = timerZero + Time.deltaTime;
+        }
+        else
+        {
+            isFinishPower = false;
+            timerZero = 0;
+            timer = 0;
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.CompareTag("Floor"))
         {
             BallBounces();
+            timer = 0;
         }
     }
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.CompareTag("Air"))
+        {
+            rb.AddForce(Vector3.up * upspeed/2);
+        }
+    }
+    public void BallBompFail()
+    {
+        BallMovementForward();
+        BallMovementUp();
+        rb.AddForce(Vector3.up * upspeed/2);
+    }
+
     public void BallBounces()
     {
-        ballChilObj.transform.DOScale(new Vector3(1f,0.9f,0.9f),0.1f).OnComplete(()=>ballChilObj.transform.DOScale(new Vector3(1, 1, 1), 0.1f));
+        ballChilObj.transform.DOScale(new Vector3(1f, 0.9f, 0.9f), 0.1f).OnComplete(() => ballChilObj.transform.DOScale(new Vector3(1, 1, 1), 0.1f));
     }
 }
