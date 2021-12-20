@@ -2,14 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
+    public Text scoreText;
+    public int scoreValue;
     public GameObject waterPrefab;
     public GameObject[] Levels;
     public GameObject ball;
 
+    public static GameManager instance;
+
     void Start()
     {
+        instance = this;
         ball = FindObjectOfType<BallPlayer>().gameObject;
         if (!PlayerPrefs.HasKey("Level"))
         {
@@ -17,12 +23,14 @@ public class GameManager : MonoBehaviour
         }
         Levels[PlayerPrefs.GetInt("Level") % 5].SetActive(true);
         StartGame();
+
     }
 
 
     public void StartGame()
     {
-        waterPrefab.transform.DOScaleY(0,2f).OnComplete(()=> {
+        waterPrefab.transform.DOScaleY(0, 2f).OnComplete(() =>
+        {
             ball.GetComponent<BallPlayer>().startGame = true;
         });
     }
