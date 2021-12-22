@@ -10,23 +10,21 @@ public class GameManager : MonoBehaviour
     public GameObject waterPrefab;
     public GameObject[] Levels;
     public GameObject ball;
-
+    public GameObject winP, loseP;
     public static GameManager instance;
 
     void Start()
     {
         instance = this;
-        ball = FindObjectOfType<BallPlayer>().gameObject;
+       
         if (!PlayerPrefs.HasKey("Level"))
         {
             PlayerPrefs.SetInt("Level", 0);
         }
         Levels[PlayerPrefs.GetInt("Level") % 5].SetActive(true);
+        ball = FindObjectOfType<BallPlayer>().gameObject;
         StartGame();
-
     }
-
-
     public void StartGame()
     {
         waterPrefab.transform.DOScaleY(0, 2f).OnComplete(() =>
@@ -34,7 +32,6 @@ public class GameManager : MonoBehaviour
             ball.GetComponent<BallPlayer>().startGame = true;
         });
     }
-
     public void WinGame()
     {
 

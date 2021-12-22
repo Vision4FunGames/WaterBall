@@ -10,6 +10,8 @@ TagManager:
   - Coin
   - CoinGoTransForm
   - MainCanvas
+  - jar
+  - diken
   layers:
   - Default
   - TransparentFX

@@ -62,11 +62,12 @@ public class BallPlayer : MonoBehaviour
             if (isFail)
             {
                 BallBompFail();
+
             }
             else
             {
                 posY = transform.position;
-                posY.y = Mathf.Clamp(transform.position.y, -20, maxPosY);
+                posY.y = Mathf.Clamp(transform.position.y, -100, maxPosY);
                 transform.position = posY;
             }
         }
@@ -111,6 +112,23 @@ public class BallPlayer : MonoBehaviour
         {
             BallBounces();
             timer = 0;
+        }
+       
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("jar"))
+        {
+            other.GetComponent<Collider>().enabled = false;
+            other.transform.GetChild(0).gameObject.SetActive(false);
+            other.transform.GetChild(1).gameObject.SetActive(false);
+            other.transform.GetChild(2).gameObject.SetActive(true);
+        }
+        if (other.CompareTag("diken"))
+        {
+            isFail = true;
+            GetComponent<BlendShapeScript>().isFail = true;
+            GetComponent<BlendShapeScript>().Invoke("cameraBlock", 2f);
         }
     }
     private void OnTriggerStay(Collider other)
