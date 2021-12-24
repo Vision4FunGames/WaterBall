@@ -12,6 +12,8 @@ TagManager:
   - MainCanvas
   - jar
   - diken
+  - brokenglass
+  - camur
   layers:
   - Default
   - TransparentFX

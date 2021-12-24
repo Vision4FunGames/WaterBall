@@ -27,5 +27,25 @@ public class BallPlayerGoldScript : MonoBehaviour
                 Destroy(current);
             });
         }
+        if(other.CompareTag("Finish"))
+        {
+            GameManager.instance.WinGame();
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.CompareTag("camur"))
+        {
+            GameObject current = Instantiate(Resources.Load<GameObject>("CamurImage"), canvasMain.transform);
+            Destroy(collision.gameObject);
+            Vector3 goldpos = Camera.main.WorldToScreenPoint(this.transform.position);
+            current.transform.position = goldpos;
+            current.transform.DOLocalMove(canvasMain.transform.GetChild(0).transform.localPosition, 1f).OnComplete(() =>
+            {
+                GameManager.instance.scoreValue -= 1;
+                GameManager.instance.scoreText.text = ": " + GameManager.instance.scoreValue.ToString();
+                Destroy(current);
+            });
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public Text scoreText;
@@ -13,7 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject winP, loseP;
     public static GameManager instance;
 
-    void Start()
+    void Awake()
     {
         instance = this;
        
@@ -21,8 +22,12 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("Level", 0);
         }
-        Levels[PlayerPrefs.GetInt("Level") % 5].SetActive(true);
+        //Levels[PlayerPrefs.GetInt("Level") % 5].SetActive(true);
         ball = FindObjectOfType<BallPlayer>().gameObject;
+      
+    }
+    private void Start()
+    {
         StartGame();
     }
     public void StartGame()
@@ -34,10 +39,15 @@ public class GameManager : MonoBehaviour
     }
     public void WinGame()
     {
-
+        winP.SetActive(true);
+        PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
     }
     public void FailGame()
     {
 
+    }
+    public void nextLevel()
+    {
+        SceneManager.LoadScene("MainGame");
     }
 }

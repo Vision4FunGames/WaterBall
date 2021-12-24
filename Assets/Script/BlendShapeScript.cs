@@ -51,7 +51,6 @@ public class BlendShapeScript : MonoBehaviour
         {
             failCond();
         }
-        print(blendOne);
     }
     public void failCond()
     {

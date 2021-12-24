@@ -113,6 +113,12 @@ public class BallPlayer : MonoBehaviour
             BallBounces();
             timer = 0;
         }
+        if (collision.transform.CompareTag("brokenglass"))
+        {
+            collision.transform.GetComponent<Collider>().enabled = false;
+            collision.transform.GetComponent<MeshRenderer>().enabled = false;
+            collision.transform.GetChild(0).gameObject.SetActive(true);
+        }
        
     }
     private void OnTriggerEnter(Collider other)
@@ -130,6 +136,7 @@ public class BallPlayer : MonoBehaviour
             GetComponent<BlendShapeScript>().isFail = true;
             GetComponent<BlendShapeScript>().Invoke("cameraBlock", 2f);
         }
+       
     }
     private void OnTriggerStay(Collider other)
     {
