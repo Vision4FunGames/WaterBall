@@ -15,10 +15,9 @@ namespace EpicToonFX
         // Use this for initialization
         void Start()
         {
- 
+            //rotateVector = new Vector3(0, Random.Range(-90, 90), Random.Range(-90, 90));
         }
  
-        // Update is called once per frame
         void Update()
         {
             if (rotateSpace == spaceEnum.Local)

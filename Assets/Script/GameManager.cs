@@ -13,18 +13,18 @@ public class GameManager : MonoBehaviour
     public GameObject ball;
     public GameObject winP, loseP;
     public static GameManager instance;
-
+    bool isonce;
     void Awake()
     {
         instance = this;
-       
+        print(PlayerPrefs.GetInt("Level"));
         if (!PlayerPrefs.HasKey("Level"))
         {
             PlayerPrefs.SetInt("Level", 0);
         }
-        //Levels[PlayerPrefs.GetInt("Level") % 5].SetActive(true);
+        Levels[PlayerPrefs.GetInt("Level") % 5].SetActive(true);
         ball = FindObjectOfType<BallPlayer>().gameObject;
-      
+
     }
     private void Start()
     {
@@ -39,12 +39,17 @@ public class GameManager : MonoBehaviour
     }
     public void WinGame()
     {
-        winP.SetActive(true);
-        PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
+        if (!isonce)
+        {
+            winP.SetActive(true);
+            PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
+            isonce = true;
+        }
+
     }
     public void FailGame()
     {
-
+        loseP.SetActive(true);
     }
     public void nextLevel()
     {

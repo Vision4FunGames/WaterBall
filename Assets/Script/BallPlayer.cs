@@ -23,6 +23,7 @@ public class BallPlayer : MonoBehaviour
     bool isPlayParticle;
     public bool isFail;
     public bool startGame;
+    public DOTweenPath dp;
 
     void Start()
     {
@@ -71,6 +72,7 @@ public class BallPlayer : MonoBehaviour
                 transform.position = posY;
             }
         }
+
     }
 
     public void BallMovementForward()
@@ -119,7 +121,6 @@ public class BallPlayer : MonoBehaviour
             collision.transform.GetComponent<MeshRenderer>().enabled = false;
             collision.transform.GetChild(0).gameObject.SetActive(true);
         }
-       
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -136,7 +137,11 @@ public class BallPlayer : MonoBehaviour
             GetComponent<BlendShapeScript>().isFail = true;
             GetComponent<BlendShapeScript>().Invoke("cameraBlock", 2f);
         }
-       
+        if(other.CompareTag("pathBoru"))
+        {
+            transform.parent = other.GetComponent<pathcscript>().dp.transform;
+            other.GetComponent<pathcscript>().dp.DOPlay();
+        }
     }
     private void OnTriggerStay(Collider other)
     {
