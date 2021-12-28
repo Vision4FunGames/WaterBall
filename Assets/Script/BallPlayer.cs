@@ -139,8 +139,17 @@ public class BallPlayer : MonoBehaviour
         }
         if(other.CompareTag("pathBoru"))
         {
+            rb.isKinematic = true;
             transform.parent = other.GetComponent<pathcscript>().dp.transform;
-            other.GetComponent<pathcscript>().dp.DOPlay();
+            transform.localPosition = new Vector3(0, 0, 0);
+            Tween t = other.GetComponent<pathcscript>().dp.GetTween();
+            t.OnComplete(()=> {
+                transform.parent = other.GetComponent<pathcscript>().transform.parent;
+                other.GetComponent<pathcscript>().DOKill();
+                rb.isKinematic = false;
+            });
+            t.Restart();
+            t.Play();
         }
     }
     private void OnTriggerStay(Collider other)
