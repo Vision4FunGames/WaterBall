@@ -34,7 +34,7 @@ public class BallPlayer : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(startGame)
+        if (startGame)
         {
             dir = transform.GetChild(0).transform.position - transform.GetChild(1).transform.position;
             if (Input.GetMouseButton(0))
@@ -125,7 +125,7 @@ public class BallPlayer : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("jar"))
+        if (other.CompareTag("jar"))
         {
             VibrationManager.Instance.Pop();
             other.GetComponent<Collider>().enabled = false;
@@ -140,34 +140,50 @@ public class BallPlayer : MonoBehaviour
             GetComponent<BlendShapeScript>().isFail = true;
             GetComponent<BlendShapeScript>().Invoke("cameraBlock", 2f);
         }
-        if(other.CompareTag("pathBoru"))
+        if (other.CompareTag("pathBoru"))
         {
             other.GetComponent<pathcscript>().dpdpdp();
             rb.isKinematic = true;
             transform.parent = other.GetComponent<pathcscript>().dp.transform;
             transform.localPosition = new Vector3(0, 0, 0);
-             Tween t = other.GetComponent<pathcscript>().dp.GetTween();
+            Tween t = other.GetComponent<pathcscript>().dp.GetTween();
             t.Restart();
-            t.OnComplete(()=> {
+            t.OnComplete(() =>
+            {
                 transform.parent = other.GetComponent<pathcscript>().transform.parent;
                 other.GetComponent<pathcscript>().DOKill();
                 rb.isKinematic = false;
             });
             t.Play();
         }
+        if (other.CompareTag("tutoWater"))
+        {
+            TutorialSc tl = FindObjectOfType<TutorialSc>();
+            tl.WaterTutorial();
+        }
+        if (other.CompareTag("tutoCamur"))
+        {
+            TutorialSc tl = FindObjectOfType<TutorialSc>();
+            tl.CamurTutorial();
+        }
+        if (other.CompareTag("tutoDiken"))
+        {
+            TutorialSc tl = FindObjectOfType<TutorialSc>();
+            tl.DikenTutorial();
+        }
     }
     private void OnTriggerStay(Collider other)
     {
-        if(other.CompareTag("Air"))
+        if (other.CompareTag("Air"))
         {
-            rb.AddForce(Vector3.up * upspeed/2);
+            rb.AddForce(Vector3.up * upspeed / 2);
         }
     }
     public void BallBompFail()
     {
         BallMovementForward();
         BallMovementUp();
-        rb.AddForce(Vector3.up * upspeed/2);
+        rb.AddForce(Vector3.up * upspeed / 2);
     }
 
     public void BallBounces()

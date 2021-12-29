@@ -16,6 +16,9 @@ TagManager:
   - camur
   - finishstack
   - pathBoru
+  - tutoWater
+  - tutoCamur
+  - tutoDiken
   layers:
   - Default
   - TransparentFX

@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
         waterPrefab.transform.DOScaleY(0, 2f).OnComplete(() =>
         {
             ball.GetComponent<BallPlayer>().startGame = true;
+            FindObjectOfType<TutorialSc>()._firstTutorial.SetActive(true);
+            Time.timeScale = 0;
         });
     }
     public void WinGame()
