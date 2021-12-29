@@ -8,17 +8,21 @@ public class pathcscript : MonoBehaviour
 
     private void Awake()
     {
-        dp.DOPause();
+       
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+        dp.DOPause();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public void dpdpdp()
+    {
+       // dp.DOKill();
     }
 }

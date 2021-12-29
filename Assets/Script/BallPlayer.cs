@@ -117,6 +117,7 @@ public class BallPlayer : MonoBehaviour
         }
         if (collision.transform.CompareTag("brokenglass"))
         {
+            VibrationManager.Instance.Pop();
             collision.transform.GetComponent<Collider>().enabled = false;
             collision.transform.GetComponent<MeshRenderer>().enabled = false;
             collision.transform.GetChild(0).gameObject.SetActive(true);
@@ -126,6 +127,7 @@ public class BallPlayer : MonoBehaviour
     {
         if(other.CompareTag("jar"))
         {
+            VibrationManager.Instance.Pop();
             other.GetComponent<Collider>().enabled = false;
             other.transform.GetChild(0).gameObject.SetActive(false);
             other.transform.GetChild(1).gameObject.SetActive(false);
@@ -133,22 +135,24 @@ public class BallPlayer : MonoBehaviour
         }
         if (other.CompareTag("diken"))
         {
+            VibrationManager.Instance.Pop();
             isFail = true;
             GetComponent<BlendShapeScript>().isFail = true;
             GetComponent<BlendShapeScript>().Invoke("cameraBlock", 2f);
         }
         if(other.CompareTag("pathBoru"))
         {
+            other.GetComponent<pathcscript>().dpdpdp();
             rb.isKinematic = true;
             transform.parent = other.GetComponent<pathcscript>().dp.transform;
             transform.localPosition = new Vector3(0, 0, 0);
-            Tween t = other.GetComponent<pathcscript>().dp.GetTween();
+             Tween t = other.GetComponent<pathcscript>().dp.GetTween();
+            t.Restart();
             t.OnComplete(()=> {
                 transform.parent = other.GetComponent<pathcscript>().transform.parent;
                 other.GetComponent<pathcscript>().DOKill();
                 rb.isKinematic = false;
             });
-            t.Restart();
             t.Play();
         }
     }

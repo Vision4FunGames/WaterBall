@@ -19,19 +19,21 @@ public class BallPlayerGoldScript : MonoBehaviour
     {
         if (other.CompareTag("Coin"))
         {
+            VibrationManager.Instance.Pop();
             GameObject current = Instantiate(Resources.Load<GameObject>("GoldImage"), canvasMain.transform);
             Destroy(other.gameObject);
             Vector3 goldpos = Camera.main.WorldToScreenPoint(this.transform.position);
             current.transform.position = goldpos;
-            current.transform.DOLocalMove(canvasMain.transform.GetChild(0).transform.localPosition, 1f).OnComplete(() =>
+            current.transform.DOLocalMove(canvasMain.transform.GetChild(1).transform.localPosition, 1f).OnComplete(() =>
             {
                 GameManager.instance.scoreValue += 1;
-                GameManager.instance.scoreText.text = ": " + GameManager.instance.scoreValue.ToString();
+                GameManager.instance.scoreText.text = " " + GameManager.instance.scoreValue.ToString();
                 Destroy(current);
             });
         }
         if (other.CompareTag("finishstack"))
         {
+            VibrationManager.Instance.Pop();
             other.GetComponent<MeshRenderer>().enabled = false;
             other.transform.GetChild(0).gameObject.SetActive(true);
             other.transform.GetChild(1).gameObject.SetActive(false);
@@ -44,6 +46,10 @@ public class BallPlayerGoldScript : MonoBehaviour
             if (FinishXPos > 150)
             {
                 FinishXPos = 150;
+            }
+            if (FinishXPos < 0)
+            {
+                FinishXPos = 50;
             }
             GetComponent<Rigidbody>().isKinematic = true;
             CameraScriptFinish cs = FindObjectOfType<CameraScriptFinish>();
@@ -66,6 +72,7 @@ public class BallPlayerGoldScript : MonoBehaviour
         }
         if (other.CompareTag("camur"))
         {
+            VibrationManager.Instance.Pop();
             GameObject current = Instantiate(Resources.Load<GameObject>("CamurImage"), canvasMain.transform);
             Destroy(other.gameObject);
             Vector3 goldpos = Camera.main.WorldToScreenPoint(this.transform.position);
