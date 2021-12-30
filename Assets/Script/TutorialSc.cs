@@ -62,5 +62,4 @@ public class TutorialSc : MonoBehaviour
         _waterTutorial.SetActive(false);
         _camurTutorial.SetActive(false);
     }
-
 }

@@ -13,7 +13,7 @@ public class BallPlayer : MonoBehaviour
 
     GameObject ballChilObj;
     Rigidbody rb;
-
+    AudioSource ai;
     Vector3 dir;
     Vector3 posY;
 
@@ -30,6 +30,7 @@ public class BallPlayer : MonoBehaviour
         Application.targetFrameRate = 60;
         rb = GetComponent<Rigidbody>();
         ballChilObj = transform.GetChild(0).gameObject;
+        ai = GetComponent<AudioSource>();
     }
 
     void FixedUpdate()
@@ -67,9 +68,9 @@ public class BallPlayer : MonoBehaviour
             }
             else
             {
-                posY = transform.position;
-                posY.y = Mathf.Clamp(transform.position.y, -100, maxPosY);
-                transform.position = posY;
+                posY = transform.localPosition;
+                posY.y = Mathf.Clamp(transform.localPosition.y, -100, maxPosY);
+                transform.localPosition = posY;
             }
         }
 
@@ -82,6 +83,7 @@ public class BallPlayer : MonoBehaviour
         if (isPlayParticle)
         {
             isPlayParticle = false;
+            ai.Stop();
             particleEffectWater.Stop();
         }
     }
@@ -91,6 +93,7 @@ public class BallPlayer : MonoBehaviour
         if (!isPlayParticle)
         {
             isPlayParticle = true;
+            ai.Play();
             particleEffectWater.Play();
         }
     }
