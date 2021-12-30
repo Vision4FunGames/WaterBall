@@ -4,6 +4,10 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using ElephantSDK;
+using GameAnalyticsSDK;
+
+
 public class GameManager : MonoBehaviour
 {
     public Text scoreText;
@@ -24,7 +28,15 @@ public class GameManager : MonoBehaviour
         }
         Levels[PlayerPrefs.GetInt("Level") % 5].SetActive(true);
         ball = FindObjectOfType<BallPlayer>().gameObject;
-
+        //#if UNITY_IOS
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            if (ElephantIOS.getConsentStatus() == "Authorized")
+            {
+                GameAnalytics.Initialize();
+            }
+        }
+        //#endif
     }
     private void Start()
     {
@@ -48,12 +60,32 @@ public class GameManager : MonoBehaviour
             winP.SetActive(true);
             PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
             isonce = true;
+            //#if UNITY_IOS
+            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                if (ElephantIOS.getConsentStatus() == "Authorized")
+                {
+                    Elephant.LevelCompleted(PlayerPrefs.GetInt("Level"));
+                    GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, PlayerPrefs.GetInt("Level").ToString());
+                }
+            }
+            //#endif
         }
 
     }
     public void FailGame()
     {
         loseP.SetActive(true);
+        //#if UNITY_IOS
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            if (ElephantIOS.getConsentStatus() == "Authorized")
+            {
+                Elephant.LevelFailed(PlayerPrefs.GetInt("Level"));
+                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, PlayerPrefs.GetInt("Level").ToString());
+            }
+        }
+        //#endif
     }
     public void nextLevel()
     {
