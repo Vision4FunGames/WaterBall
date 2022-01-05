@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
         }
         Levels[PlayerPrefs.GetInt("Level") % 5].SetActive(true);
         ball = FindObjectOfType<BallPlayer>().gameObject;
-        //#if UNITY_IOS
+        #if UNITY_IOS
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             if (ElephantIOS.getConsentStatus() == "Authorized")
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
                 GameAnalytics.Initialize();
             }
         }
-        //#endif
+        #endif
     }
     private void Start()
     {
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
             winP.SetActive(true);
             PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
             isonce = true;
-            //#if UNITY_IOS
+            #if UNITY_IOS
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
                 if (ElephantIOS.getConsentStatus() == "Authorized")
@@ -69,14 +69,13 @@ public class GameManager : MonoBehaviour
                     GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, PlayerPrefs.GetInt("Level").ToString());
                 }
             }
-            //#endif
+            #endif
         }
-
     }
     public void FailGame()
     {
         loseP.SetActive(true);
-        //#if UNITY_IOS
+        #if UNITY_IOS
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             if (ElephantIOS.getConsentStatus() == "Authorized")
@@ -85,7 +84,7 @@ public class GameManager : MonoBehaviour
                 GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, PlayerPrefs.GetInt("Level").ToString());
             }
         }
-        //#endif
+        #endif
     }
     public void nextLevel()
     {
